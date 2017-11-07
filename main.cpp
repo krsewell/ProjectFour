@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include "roulette.hpp"
+#include "bettingSystem.hpp"
 
 using std::cout;
 
