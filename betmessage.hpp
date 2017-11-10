@@ -13,7 +13,7 @@ private:
   int m_betType;
   int m_betValue;
   int m_betWager;
-  bool m_good = true;
+  bool m_good;
 
   void setGamblerId(int);
   void setBetType(int);
@@ -26,9 +26,10 @@ public:
   enum Type {Single,Color,Modulo,Group,Half,Column};
   enum TypeValue {Red,Black,Even,Odd,Lower,Middle,Upper,First,Second,Third};
 
-  int getID();
-  int getType();
-  int getValue();
-  int getWager();
+  int getID() const;
+  int getType() const;
+  int getValue() const;
+  int getWager() const;
+  bool check() const;
 
 };

@@ -1,6 +1,7 @@
 #include "betmessage.hpp"
 
 BetMessage::BetMessage(int gamblerId, int betType, int betValue, int betWager) {
+  m_good = true;
   setGamblerId(gamblerId);
   setBetType(betType);
   setBetValue(betValue);
@@ -68,15 +69,19 @@ void BetMessage::setBetWager(int betWager) {
   }
 }
 
-int BetMessage::getID() {
+int BetMessage::getID() const {
   return m_gamblerId;
 }
-int BetMessage::getType() {
+int BetMessage::getType() const {
   return m_betType;
 }
-int BetMessage::getValue() {
+int BetMessage::getValue() const{
   return m_betValue;
 }
-int BetMessage::getWager() {
+int BetMessage::getWager() const {
   return m_betWager;
+}
+
+bool BetMessage::check() const{
+  return m_good;
 }
