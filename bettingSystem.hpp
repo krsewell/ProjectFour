@@ -4,24 +4,29 @@
 #include <iostream>
 #include <string>
 #include <locale>
+#include <cstdlib>
 #include "roulette.hpp"
 #include "betmessage.hpp"
 #include "participant.hpp"
-
-using std::cout;
+#include "globalTools.hpp"
 
 #endif
 
 class BettingSystem {
 private:
-  Participant * m_participantRef[10];   //holds a pointer for an array of participants 
-  BetMessage & m_betMessageRef;     //holds a pointer for an array of betMessages
-
-  void writeParticipant();
-  void writeBank(Participant);
-  // established rules for bets <methods>
-  // way to implement payouts <private methods>
+  std::vector<Participant> m_participantRef;   //holds an vector of participants
+  BetMessage * m_betMessageRef;
+  RouletteWheel * game;
+  void writeBank(Participant &);
   
 public:
-  // way for participants to place bets <methods>
+  BettingSystem();
+  ~BettingSystem();
+
+  void joinGame(Participant*);
+  void leaveGame(Participant*);
+  void getWinners();
+  string getParticipantName(int);
+  void sendBetMessage(int,int,int,int);
+  void sendBetMessage();
 };

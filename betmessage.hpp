@@ -3,7 +3,6 @@
 
 #include <iostream>
 
-
 #endif
 
 
@@ -19,9 +18,11 @@ private:
   void setBetType(int);
   void setBetValue(int);
   void setBetWager(int);
-  ~BetMessage();
+  
 
 public:
+  BetMessage();
+  ~BetMessage();
   BetMessage(int,int,int,int);
   enum Type {Single,Color,Modulo,Group,Half,Column};
   enum TypeValue {Red,Black,Even,Odd,Lower,Middle,Upper,First,Second,Third};

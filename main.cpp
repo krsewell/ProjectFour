@@ -7,18 +7,19 @@
 #ifndef MAIN_H_INCL_GUARD
 #define MAIN_H_INCL_GUARD
 
-#include <iostream>
-#include "roulette.hpp"
-#include "bettingSystem.hpp"
-
-using std::cout;
+#include "menu.hpp"
 
 #endif
 
-int main() { 
-  RouletteWheel game;
-  game.roll();
 
+int main() { 
+  //initialize program start
+  BettingSystem * table = new BettingSystem();
+  Participant customer(table); 
+  // mainmenu(&customer);
+  
+  //exit code here.
+  delete table;
 
   return 0;
 }

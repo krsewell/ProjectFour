@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include "bettingSystem.hpp"
 
 using std::string;
 
@@ -10,24 +11,25 @@ using std::string;
 
 class Participant {
 private:
-  static unsigned int participantCount;
-  int m_gamblerId;
   string m_name;
   int m_bank;
   int m_gain;
+  BettingSystem * m_CurrentBetTable;
   
   friend class BettingSystem;
-  void setBank(int);      //declared private for use by betting system
+  //declared private for use by betting system           
   void PayOut(int);
-  void setGamblerId();
+  void initBank();
 
 public:
-  Participant();
-  Participant(string);
+  Participant(BettingSystem*);
+  Participant(BettingSystem*, string);
   void setName(string);
+  void setName();
+
+  string getName() const;
   int getBank() const;
   int getGain() const;
 
-  string getName() const;
-  int getID() const;
+  
 };

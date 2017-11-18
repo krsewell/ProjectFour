@@ -1,5 +1,9 @@
 #include "betmessage.hpp"
 
+BetMessage::BetMessage() {
+  m_good = false;
+}
+
 BetMessage::BetMessage(int gamblerId, int betType, int betValue, int betWager) {
   m_good = true;
   setGamblerId(gamblerId);
@@ -61,7 +65,7 @@ void BetMessage::setBetValue(int betValue) {
   }
 }
 void BetMessage::setBetWager(int betWager) {
-  if (betWager > 0 && betWager < 10000) {
+  if (betWager > 0) {
     m_betWager = betWager;
   } else {
     std::cout << "Improper Bet Wager\n";
