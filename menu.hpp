@@ -7,19 +7,17 @@
 #include "roulette.hpp"
 #include "globalTools.hpp"
 
-extern BettingSystem house;
-extern RouletteWheel game;
-
 using std::setw;
 
-void menuController();
-void mainmenu();
-void betmenu();
+void mainmenu(Participant&,BettingSystem&);
+void betmenu(Participant&);
 void playermenu();
 void exitcode();
 
-int fetchType();
-int fetchTValue();
-int fetchWager();
+void fetchType(int&,int&);
+void fetchWager(int&,Participant&);
+
+void printStats(Participant&);
+int get0thru36();
 
 #endif

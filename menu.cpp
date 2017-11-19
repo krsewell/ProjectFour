@@ -1,93 +1,73 @@
 #include "menu.hpp"
 
-/*    Control Varible Key   xxxz
-*         xxx - denotes menu command
-*         z - denotes current player active 
-*       control % 10 gives player number
-*       subtract player number and divide by 10 to give menu code
-*
-*/
+void mainmenu(Participant& customer ,BettingSystem& table) {
+  while(true) {
+    std::cout << "## MAIN MENU. ##\n" << customer.getName() << ", ";
+    std::cout << "Please enter your selection. \n"
+              << std::setw(5) << "  1.)" << " Place Bet.\n"
+              << std::setw(5) << "  2.)" << " Change Player.\n"
+              << std::setw(5) << "  3.)" << " Spin the Wheel.\n"
+              << std::setw(5) << "  4.)" << " Exit Game.\n";
+    string temp;
+    std::cin >> temp;
+    int swvar;
+    if (checkIsDigit(temp)) {
+      swvar = atoi(temp.c_str());
+    }
 
-void menuController() {
- 
-}
+    switch (swvar) {
+      case 1:
+        betmenu(customer);
+        break;
 
-void mainmenu() {
-  
-  std::cout << "## MAIN MENU. ##\n" << "house.getParticipantName(playerID)" << ", ";
-  std::cout << "Please enter your selection. \n"
-            << std::setw(5) << "  1.)" << " Place Bet.\n"
-            << std::setw(5) << "  2.)" << " Change Player.\n"
-            << std::setw(5) << "  3.)" << " Spin the Wheel.\n"
-            << std::setw(5) << "  4.)" << " Exit Game.\n";
-  string temp;
-  std::cin >> temp;
-  int swvar;
-  if (checkIsDigit(temp)) {
-    swvar = atoi(temp.c_str());
-  }
+      case 2:
+        playermenu();
+        break;
 
-  switch (swvar) {
-    case 1:
-      
-      betmenu();
-      break;
-    case 2:
-     
-      playermenu();
-      break;
-    case 3:
-      
-      break;
-    case 4:
-      
-      break;
+      case 3:
+        table.getWinners();
+        printStats(customer);
+        customer.resetSpin();
+        break;
 
-    default:
-      mainmenu();
+      case 4:
+        printStats(customer);
+        return;
+
+      default:
+        mainmenu(customer,table);
+    }
   }
 }
 
-void betmenu() {
+void betmenu(Participant& customer) {
   int Type = -1; 
   int TypeValue;
   int Wager = -1;
   
-  std::cout << "## BET MENU. ##\n" << "house.getParticipantName()" << ", ";
-  std::cout << "Please enter your selection. \n"
-            << std::setw(5) << "  1.)" << " Enter Bet Type.\n"
-            << std::setw(5) << "  2.)" << " Enter Bet Wager.\n"
-            << std::setw(5) << "  3.)" << " Previous Menu.\n";
-  string temp;
-  std::cin >> temp;
-  int swvar;
-  if (checkIsDigit(temp)) {
-    swvar = atoi(temp.c_str());
+  customer.setBetArray();
+  bool isGood = true;
+  for (int i = 0; i < customer.getSIZE(); i++) {
+    if (isGood) {
+      printStats(customer);
+      fetchType(Type,TypeValue);
+      fetchWager(Wager, customer);
+      customer.getBet(i)->setBetType(Type); 
+      customer.getBet(i)->setBetValue(TypeValue);
+      customer.getBet(i)->setBetWager(Wager);
+      customer.getBet(i)->checkMessage(customer);
+      if (!customer.getBet(i)->good()) {
+        //std::cout << Type << " "<< TypeValue << " " << Wager << std::endl;
+        std::cout << customer.getBet(i)->good()<< " " << customer.getBet(i)->getType()<< " " 
+                  << customer.getBet(i)->getValue()<< " "<<customer.getBet(i)->getWager()<< std::endl;
+        isGood = false;
+      }
+    }
   }
-  switch (swvar) {
-    case 1:
-      Type = fetchType();
-      TypeValue = Type % 100;
-      Type -= TypeValue;
-      break;
-
-    case 2:
-      Wager = fetchWager();
-      break;
-    
-    case 3:
-
-      break;
-
-    default:
-
-      betmenu();
-  }  
 }
 
 
-int fetchType() {
-  int ty;
+void fetchType(int& ty, int& tyv) {
   std::cout << "Please enter a type.\n" 
             << setw(3) << "1" << ".) Single\t\tPAYOUT 36:1\n"
             << setw(3) << "2" << ".) Red\t\tPAYOUT 2:1\n"
@@ -104,27 +84,80 @@ int fetchType() {
             << setw(3) << "13" << ".) Third Column\tPAYOUT 3:1\n";
   string temp;
   std::cin >> temp;
+  int var;
   if (checkIsDigit(temp)) {
-    ty = atoi(temp.c_str());
-    if (ty == 1) {}
-    else if (ty == 2 || ty == 3) {}
-    else if (ty == 4 || ty == 5) {}
-    else if (ty >= 6 && ty <= 8) {}
-    else if (ty == 9 || ty == 10) {}
-    else if (ty >= 11 && ty <= 13) {}
+    var = atoi(temp.c_str());
+    if (var == 1) {
+      ty = BetMessage::Type::Single;
+      tyv = get0thru36();
+    }
+    else if (var == 2 || var == 3) {
+      ty = BetMessage::Type::Color;
+      if (var == 2) {tyv = BetMessage::TypeValue::Red;}
+      if (var == 3) {tyv = BetMessage::TypeValue::Black;}
+    }
+    else if (var == 4 || var == 5) {
+      ty = BetMessage::Type::Modulo;
+      if (var == 4) {tyv = BetMessage::TypeValue::Even;}
+      if (var == 5) {tyv = BetMessage::TypeValue::Odd;}
+    }
+    else if (var >= 6 && var <= 8) {
+      ty = BetMessage::Type::Group;
+      if (var == 6) {tyv = BetMessage::TypeValue::Lower;}
+      if (var == 7) {tyv = BetMessage::TypeValue::Middle;}
+      if (var == 8) {tyv = BetMessage::TypeValue::Upper;}
+    }
+    else if (var == 9 || var == 10) {
+      ty = BetMessage::Type::Half;
+      if (var == 9) {tyv = BetMessage::TypeValue::Lower;}
+      if (var == 10) {tyv = BetMessage::TypeValue::Upper;}
+    }
+    else if (var >= 11 && var <= 13) {
+      ty = BetMessage::Type::Column;
+      if (var == 11) {tyv = BetMessage::TypeValue::First;}
+      if (var == 12) {tyv = BetMessage::TypeValue::Second;}
+      if (var == 13) {tyv = BetMessage::TypeValue::Third;}
+    }
     else {ty = 0;}
   }
   else {ty = 0;} 
-  return ty;
 }
 
-int fetchWager() {
-  int wg;
-
-  return wg;
+void fetchWager(int& wg, Participant& customer) {
+  printStats(customer);
+  std::cout << "Please enter a Wager: ";
+  string temp;
+  std::cin >> temp;
+  std::cout << std::endl;
+  if (checkIsDigit(temp)) {
+    wg = atoi(temp.c_str());
+  }
 }
 
 void playermenu() {
   std::cout << "\n\nSorry this feature is not yet implemented.\n\n";
-  mainmenu();
+}
+
+
+int get0thru36() {
+  string temp;
+  while (true) {
+    std::cout << "\nPlease enter a number from 0-36: ";
+    std::cin >> temp;
+    std::cout << std::endl;
+    if (checkIsDigit(temp)) {
+      int rtn = atoi(temp.c_str());
+      if (rtn >= 0 && rtn < 37) {
+        return rtn;
+      } 
+    }
+    std::cout << "\nEntry not valid. Please try again.\n";
+  }
+}
+
+void printStats(Participant& customer) {
+  std::cout << "Total Dollar Amount: $" << customer.getBank() << " ";
+  std::cout << "Round Gain/Loss: $" << customer.getSpinGain() << " ";
+  std::cout << "Total Gain/Loss: $" << customer.getTotalGain() << " ";
+  std::cout << std::endl;
 }

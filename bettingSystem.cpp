@@ -1,4 +1,4 @@
-#include "BettingSystem.hpp"
+#include "bettingSystem.hpp"
 
 BettingSystem::BettingSystem() {
   game = new RouletteWheel();
@@ -8,6 +8,8 @@ BettingSystem::~BettingSystem() {
 }
 
 void BettingSystem::getWinners() {
+  game->roll();
+  std::cout << "\n\nThe ball falls in " << game->getRoll() << " slot!\n\n";
   for (Participant* p : m_player) {
     for (int i = 0; i < p->getSIZE(); i++) {
       BetMessage* msg = p->getBet(i);
@@ -65,7 +67,6 @@ void BettingSystem::getWinners() {
       }
     }
     p->delBetArray();
-    p->setBetArray();
   }
 }
 

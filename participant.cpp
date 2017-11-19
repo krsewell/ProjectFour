@@ -2,7 +2,7 @@
 
 
 Participant::Participant() {
- 
+  m_spinGain = 0;
   setName();
 
 }
@@ -64,10 +64,11 @@ void Participant::setBetArray() {
 }
 
 void Participant::delBetArray() {
-  for (int i = 0; i < SIZE; i++) {
+  for (int i = 0; i < SIZE && m_bets != nullptr; i++) {
     delete m_bets[i];
   }
   delete [] m_bets;
+  m_bets = nullptr;
 }
 
 string Participant::getName() const {
@@ -108,5 +109,6 @@ int Participant::getSIZE() const {
 }
 
 BetMessage* Participant::getBet(int index) {
+  if (m_bets == nullptr) {return nullptr;}
   return m_bets[index];
 }

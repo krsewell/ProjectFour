@@ -13,9 +13,6 @@ private:
   int m_betWager;
   bool m_good;
 
-  void setBetType(int);
-  void setBetValue(int);
-  void setBetWager(int);
   
 
 public:
@@ -28,8 +25,12 @@ public:
   int getType() const;
   int getValue() const;
   int getWager() const;
-  void checkMessage(Participant*);
+  void checkMessage(Participant&);
   bool good() const;
+
+  void setBetType(int);
+  void setBetValue(int);
+  void setBetWager(int);
 
 };
 

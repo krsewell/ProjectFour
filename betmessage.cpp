@@ -2,6 +2,9 @@
 
 BetMessage::BetMessage() {
   m_good = false;
+  m_betType = 0;
+  m_betValue = 0;
+  m_betWager = 0;
 }
 
 BetMessage::BetMessage(int betType, int betValue, int betWager) {
@@ -11,11 +14,13 @@ BetMessage::BetMessage(int betType, int betValue, int betWager) {
   setBetWager(betWager);
 }
 
-BetMessage::~BetMessage() {}
+BetMessage::~BetMessage() {
+  //std::cout << "B.msg deleting\n";
+}
 
 
 void BetMessage::setBetType(int betType) {
-  if (betType >= 0 && betType < 5) {
+  if (betType >= 0 && betType <= 5) {
     m_betType = betType;
   } else {
     std::cout << "Improper Betting Type\n";
@@ -67,15 +72,15 @@ void BetMessage::setBetWager(int betWager) {
   }
 }
 
-void BetMessage::checkMessage(Participant * p) {
+void BetMessage::checkMessage(Participant& p) {
   /*  
   Check to see if the message has a valid wager and that the message isn't already well formed
   If the message is in good format then check if the player has enough funds to cover the bet.
   */
   if (m_betWager > 0 && !m_good) {
-    if (p->getBank() < m_betWager) {
+    if (p.getBank() > m_betWager) {
       m_good = true;
-      p->PayOut(m_betWager*-1);
+      p.PayOut(m_betWager*-1);
     } else {
       //invalidate bet
       m_betWager = 0;

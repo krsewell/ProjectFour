@@ -19,7 +19,7 @@ int main() {
   BettingSystem table;
   Participant customer;
   table.joinGame(customer);
-  // mainmenu(&customer);
+  mainmenu(customer,table);
 
   //exit code here.
 
