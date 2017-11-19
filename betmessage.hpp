@@ -4,8 +4,7 @@
 #include <iostream>
 #include "participant.hpp"
 
-#endif
-
+class Participant;
 
 class BetMessage {
 private:
@@ -33,3 +32,5 @@ public:
   bool good() const;
 
 };
+
+#endif

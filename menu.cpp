@@ -8,7 +8,7 @@
 *
 */
 
-int menuController() {
+void menuController() {
  
 }
 
@@ -49,7 +49,9 @@ void mainmenu() {
 }
 
 void betmenu() {
-  int Type = -1, TypeValue, Wager = -1;
+  int Type = -1; 
+  int TypeValue;
+  int Wager = -1;
   
   std::cout << "## BET MENU. ##\n" << "house.getParticipantName()" << ", ";
   std::cout << "Please enter your selection. \n"

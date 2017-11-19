@@ -1,14 +1,14 @@
-#include "bettingSystem.hpp"
+#include "BettingSystem.hpp"
 
 BettingSystem::BettingSystem() {
-  game = new RouletteWheel(); 
+  game = new RouletteWheel();
 }
 BettingSystem::~BettingSystem() {
   delete game;
 }
 
 void BettingSystem::getWinners() {
-  for (auto p : m_player) {
+  for (Participant* p : m_player) {
     for (int i = 0; i < p->getSIZE(); i++) {
       BetMessage* msg = p->getBet(i);
       int type;
@@ -44,21 +44,21 @@ void BettingSystem::getWinners() {
           p->PayOut(msg->getWager() * 3);
         }
       } else if (type == BetMessage::Type::Half) {
-        if (msg->getValue == BetMessage::TypeValue::Lower && game->getRoll() < 19 && game->getRoll() != 0) {
+        if (msg->getValue() == BetMessage::TypeValue::Lower && game->getRoll() < 19 && game->getRoll() != 0) {
           p->PayOut(msg->getWager() * 2);
         }
-        else if (msg->getValue == BetMessage::TypeValue::Upper && game->getRoll() > 18) {
+        else if (msg->getValue() == BetMessage::TypeValue::Upper && game->getRoll() > 18) {
           p->PayOut(msg->getWager() * 2);
         }
       } else if (type == BetMessage::Type::Column) {
         if (game->getRoll() != 0) {
-          if (msg->getValue == BetMessage::TypeValue::Third && game->getRoll() % 3 == 0) {
+          if (msg->getValue() == BetMessage::TypeValue::Third && game->getRoll() % 3 == 0) {
             p->PayOut(msg->getWager() * 3);
           }
-          else if (msg->getValue == BetMessage::TypeValue::Second && game->getRoll() % 3 == 2) {
+          else if (msg->getValue() == BetMessage::TypeValue::Second && game->getRoll() % 3 == 2) {
             p->PayOut(msg->getWager() * 3);
           }
-          else if (msg->getValue == BetMessage::TypeValue::First && game->getRoll() % 3 == 1) {
+          else if (msg->getValue() == BetMessage::TypeValue::First && game->getRoll() % 3 == 1) {
             p->PayOut(msg->getWager() * 3);
           }
         }
@@ -69,13 +69,13 @@ void BettingSystem::getWinners() {
   }
 }
 
-string BettingSystem::getParticipantName(Participant* p) {
+string BettingSystem::getParticipantName(Participant& p) {
   bool done = false;
   unsigned i = 0;
   string name = "NONE";
 
   while (!done && i < m_player.size()) {
-    if (m_player.at(i) == p) {
+    if (m_player.at(i) == &p) {
       name = m_player.at(i)->getName();
       done = true;
     }
@@ -84,17 +84,17 @@ string BettingSystem::getParticipantName(Participant* p) {
   return name;
 }
 
-void BettingSystem::joinGame(Participant * p) {
-  m_player.push_back(p);
-  p->initBank();
+void BettingSystem::joinGame(Participant& p) {
+  m_player.push_back(&p);
+  p.initBank();
 }
 
-void BettingSystem::leaveGame(Participant * p) {
+void BettingSystem::leaveGame(Participant& p) {
   bool done = false;
   unsigned i = 0;
 
   while (!done && i < m_player.size()) {
-    if (m_player.at(i) == p) {
+    if (m_player.at(i) == &p) {
       m_player.at(i) = nullptr;
       done = true;
     }

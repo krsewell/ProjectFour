@@ -12,10 +12,10 @@ extern RouletteWheel game;
 
 using std::setw;
 
-int menuController();
-void mainmenu(int&);
-void betmenu(int&);
-void playermenu(int&);
+void menuController();
+void mainmenu();
+void betmenu();
+void playermenu();
 void exitcode();
 
 int fetchType();

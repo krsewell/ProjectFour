@@ -8,7 +8,8 @@
 
 using std::string;
 
-#endif
+class BetMessage;
+class BettingSystem;
 
 class Participant {
 private:
@@ -27,7 +28,7 @@ private:
   
 
 public:
-  Participant(BettingSystem*);
+  Participant();
   Participant(BettingSystem*, string);
   ~Participant();
 
@@ -50,3 +51,5 @@ public:
 
   
 };
+
+#endif

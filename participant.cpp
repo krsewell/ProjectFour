@@ -1,8 +1,8 @@
 #include "participant.hpp"
 
 
-Participant::Participant(BettingSystem * bs) {
-  m_CurrentBetTable = bs;
+Participant::Participant() {
+ 
   setName();
 
 }

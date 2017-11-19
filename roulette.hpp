@@ -14,8 +14,6 @@ using std::time;
 using std::rand;
 using std::srand;
 
-#endif
-
 
  class RouletteWheel {
  private:
@@ -48,3 +46,5 @@ using std::srand;
 
 
  };
+
+ #endif
