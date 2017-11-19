@@ -32,12 +32,13 @@ void mainmenu(Participant& customer ,BettingSystem& table) {
         break;
 
       case 3:
-        table.getWinners();
+        table.getWinners();         //if the player has made no bets this will crash. as the pointer is invalids
         printStats(customer);
         customer.resetSpin();
         break;
 
       case 4:
+        std::cout << "\n\nThank you for playing " << customer.getName() << "!!\n\n";
         printStats(customer);
         return;
 
@@ -48,10 +49,10 @@ void mainmenu(Participant& customer ,BettingSystem& table) {
 }
 
 void betmenu(Participant& customer) {
-  int Type = -1; 
+  int Type = -1;
   int TypeValue;
   int Wager = -1;
-  
+
   customer.setBetArray();
   bool isGood = true;
   for (int i = 0; i < customer.getSIZE(); i++) {
@@ -59,13 +60,13 @@ void betmenu(Participant& customer) {
       printStats(customer);
       fetchType(Type,TypeValue);
       fetchWager(Wager, customer);
-      customer.getBet(i)->setBetType(Type); 
+      customer.getBet(i)->setBetType(Type);
       customer.getBet(i)->setBetValue(TypeValue);
       customer.getBet(i)->setBetWager(Wager);
       customer.getBet(i)->checkMessage(customer);
       if (!customer.getBet(i)->good()) {
         //std::cout << Type << " "<< TypeValue << " " << Wager << std::endl;
-        std::cout << customer.getBet(i)->good()<< " " << customer.getBet(i)->getType()<< " " 
+        std::cout << customer.getBet(i)->good()<< " " << customer.getBet(i)->getType()<< " "
                   << customer.getBet(i)->getValue()<< " "<<customer.getBet(i)->getWager()<< std::endl;
         isGood = false;
       }
@@ -75,7 +76,7 @@ void betmenu(Participant& customer) {
 
 
 void fetchType(int& ty, int& tyv) {
-  std::cout << "Please enter a type.\n" 
+  std::cout << "Please enter a type.\n"
             << setw(3) << "1" << ".) Single\t\tPAYOUT 36:1\n"
             << setw(3) << "2" << ".) Red\t\tPAYOUT 2:1\n"
             << setw(3) << "3" << ".) Black\t\tPAYOUT 2:1\n"
@@ -127,7 +128,7 @@ void fetchType(int& ty, int& tyv) {
     }
     else {ty = 0;}
   }
-  else {ty = 0;} 
+  else {ty = 0;}
 }
 
 void fetchWager(int& wg, Participant& customer) {
@@ -156,7 +157,7 @@ int get0thru36() {
       int rtn = atoi(temp.c_str());
       if (rtn >= 0 && rtn < 37) {
         return rtn;
-      } 
+      }
     }
     std::cout << "\nEntry not valid. Please try again.\n";
   }

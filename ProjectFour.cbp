@@ -32,7 +32,19 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="README.md" />
+		<Unit filename="betmessage.cpp" />
+		<Unit filename="betmessage.hpp" />
+		<Unit filename="bettingSystem.cpp" />
+		<Unit filename="bettingSystem.hpp" />
+		<Unit filename="globalTools.hpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="menu.cpp" />
+		<Unit filename="menu.hpp" />
+		<Unit filename="participant.cpp" />
+		<Unit filename="participant.hpp" />
+		<Unit filename="roulette.cpp" />
+		<Unit filename="roulette.hpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />
