@@ -1,3 +1,11 @@
+/*
+ *   kjs170430_Project4/betmessage.cpp
+ *   Copyright 2017, Kristopher Sewell, All rights reserved.
+ *
+ *   Course:  CE1337  Section:  501   Project: 4
+ */
+
+
 #include "betmessage.hpp"
 
 BetMessage::BetMessage() {

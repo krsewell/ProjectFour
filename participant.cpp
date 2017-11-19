@@ -1,3 +1,10 @@
+/*
+ *   kjs170430_Project4/participant.cpp
+ *   Copyright 2017, Kristopher Sewell, All rights reserved.
+ *
+ *   Course:  CE1337  Section:  501   Project: 4
+ */
+
 #include "participant.hpp"
 
 

@@ -1,3 +1,10 @@
+/*
+ *   kjs170430_Project4/participant.hpp
+ *   Copyright 2017, Kristopher Sewell, All rights reserved.
+ *
+ *   Course:  CE1337  Section:  501   Project: 4
+ */
+
 #ifndef PARTICIPANT_H_INCL_GUARD
 #define PARTICIPANT_H_INCL_GUARD
 
