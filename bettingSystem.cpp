@@ -8,94 +8,98 @@ BettingSystem::~BettingSystem() {
 }
 
 void BettingSystem::getWinners() {
-  for (int i = 0; i < 88; i++) {
-    BetMessage * msg = *m_betMessageRef[i];
-    int type;
-    msg.check() ? type = msg->getType() : type = -1;     //if msg is valid get type
-    Participant * p = m_participantRef[msg.getID()];
+  for (auto p : m_player) {
+    for (int i = 0; i < p->getSIZE(); i++) {
+      BetMessage* msg = p->getBet(i);
+      int type;
+      msg->good() ? type = msg->getType() : type = -1;     //if msg is valid get type
 
-    if (type == BetMessage::Type::Single) {
-      if (msg.getValue() == game->getRoll()) {
-        p.PayOut(msg.getWager() * 36);
-      }
-    } else if (type == BetMessage::Type::Color) {
-      if (game->isBlack() && msg.getValue() == BetMessage::TypeValue::Black) {
-        p.PayOut(msg.getWager() * 2);
-      }
-      else if (game->isRed() && msg.getValue() == BetMessage::TypeValue::Red) {
-        p.PayOut(msg.getWager() * 2);
-      }
+      if (type == BetMessage::Type::Single) {
+        if (msg->getValue() == game->getRoll()) {
+          p->PayOut(msg->getWager() * 36);
+        }
+      } else if (type == BetMessage::Type::Color) {
+        if (game->isBlack() && msg->getValue() == BetMessage::TypeValue::Black) {
+          p->PayOut(msg->getWager() * 2);
+        }
+        else if (game->isRed() && msg->getValue() == BetMessage::TypeValue::Red) {
+          p->PayOut(msg->getWager() * 2);
+        }
 
-    } else if (type == BetMessage::Type::Modulo) {
-      if (game->isEven() && msg.getValue() == BetMessage::TypeValue::Even) {
-        p.PayOut(msg.getWager() * 2);
-      }
-      else if (game->isOdd() && msg.getValue() == BetMessage::TypeValue::Odd) {
-        p.PayOut(msg.getWager() * 2);
-      }
-    } else if (type == BetMessage::Type::Group) {
-      if (msg.getValue() == BetMessage::TypeValue::Lower && game->getRoll() < 13 && game->getRoll() != 0) {
-        p.PayOut(msg.getWager() * 3);
-      }
-      else if (msg.getValue() == BetMessage::TypeValue::Upper && game->getRoll() > 24) {
-        p.PayOut(msg.getWager() * 3);
-      }
-      else if (msg.getValue() == BetMessage::TypeValue::Middle && game->getRoll() > 12 && game->getRoll() < 25) {
-        p.PayOut(msg.getWager() * 3);
-      }
-    } else if (type == BetMessage::Type::Half) {
-      if (msg.getValue == BetMessage::TypeValue::Lower && game->getRoll() < 19 && game->getRoll() != 0) {
-        p.PayOut(msg.getWager() * 2);
-      }
-      else if (msg.getValue == BetMessage::TypeValue::Upper && game->getRoll() > 18) {
-        p.PayOut(msg.getWager() * 2);
-      }
-    } else if (type == BetMessage::Type::Column) {
-      if (game->getRoll() != 0) {
-        if (msg.getValue == BetMessage::TypeValue::Third && game->getRoll() % 3 == 0) {
-          p.PayOut(msg.getWager() * 3);
+      } else if (type == BetMessage::Type::Modulo) {
+        if (game->isEven() && msg->getValue() == BetMessage::TypeValue::Even) {
+          p->PayOut(msg->getWager() * 2);
         }
-        else if (msg.getValue == BetMessage::TypeValue::Second && game->getRoll() % 3 == 2) {
-          p.PayOut(msg.getWager() * 3);
+        else if (game->isOdd() && msg->getValue() == BetMessage::TypeValue::Odd) {
+          p->PayOut(msg->getWager() * 2);
         }
-        else if (msg.getValue == BetMessage::TypeValue::First && game->getRoll() % 3 == 1) {
-          p.PayOut(msg.getWager() * 3);
+      } else if (type == BetMessage::Type::Group) {
+        if (msg->getValue() == BetMessage::TypeValue::Lower && game->getRoll() < 13 && game->getRoll() != 0) {
+          p->PayOut(msg->getWager() * 3);
+        }
+        else if (msg->getValue() == BetMessage::TypeValue::Upper && game->getRoll() > 24) {
+          p->PayOut(msg->getWager() * 3);
+        }
+        else if (msg->getValue() == BetMessage::TypeValue::Middle && game->getRoll() > 12 && game->getRoll() < 25) {
+          p->PayOut(msg->getWager() * 3);
+        }
+      } else if (type == BetMessage::Type::Half) {
+        if (msg->getValue == BetMessage::TypeValue::Lower && game->getRoll() < 19 && game->getRoll() != 0) {
+          p->PayOut(msg->getWager() * 2);
+        }
+        else if (msg->getValue == BetMessage::TypeValue::Upper && game->getRoll() > 18) {
+          p->PayOut(msg->getWager() * 2);
+        }
+      } else if (type == BetMessage::Type::Column) {
+        if (game->getRoll() != 0) {
+          if (msg->getValue == BetMessage::TypeValue::Third && game->getRoll() % 3 == 0) {
+            p->PayOut(msg->getWager() * 3);
+          }
+          else if (msg->getValue == BetMessage::TypeValue::Second && game->getRoll() % 3 == 2) {
+            p->PayOut(msg->getWager() * 3);
+          }
+          else if (msg->getValue == BetMessage::TypeValue::First && game->getRoll() % 3 == 1) {
+            p->PayOut(msg->getWager() * 3);
+          }
         }
       }
     }
+    p->delBetArray();
+    p->setBetArray();
   }
-  sendBetMessage();
 }
 
-string BettingSystem::getParticipantName(int id) {
-  string name;
-  name = m_participantRef[id].getName();
-  if (name.empty()) {name = "NONE";}
+string BettingSystem::getParticipantName(Participant* p) {
+  bool done = false;
+  unsigned i = 0;
+  string name = "NONE";
+
+  while (!done && i < m_player.size()) {
+    if (m_player.at(i) == p) {
+      name = m_player.at(i)->getName();
+      done = true;
+    }
+    i++;
+  }
   return name;
 }
 
-void BettingSystem::sendBetMessage(int id ,int ty ,int tyv, int wg) {
-  static int counter = 0;
-  m_betMessageRef[counter] = BetMessage(id,ty,tyv,wg);
-  if (m_betMessageRef[counter].check()) {counter++;}
-  else {m_betMessageRef[counter].~BetMessage();}
+void BettingSystem::joinGame(Participant * p) {
+  m_player.push_back(p);
+  p->initBank();
 }
 
-void BettingSystem::sendBetMessage(){
-  static int counter = 0;
-  counter = 0;
-  delete [] m_betMessageRef;    //delete and recreate
-  m_betMessageRef = new BetMessage[88];
-}
+void BettingSystem::leaveGame(Participant * p) {
+  bool done = false;
+  unsigned i = 0;
 
-void joinGame(Participant * p) {
-  for (Participant s : m_participantRef) {
-    
+  while (!done && i < m_player.size()) {
+    if (m_player.at(i) == p) {
+      m_player.at(i) = nullptr;
+      done = true;
+    }
+    i++;
   }
-}
-
-void leaveGame(Participant * p) {
-
 }
 
 

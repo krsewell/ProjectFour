@@ -8,77 +8,61 @@
 *
 */
 
-BettingSystem house;
-RouletteWheel game;
-
-
 int menuController() {
-  int c;
-
-  while (c !=1990) {
-    if (c == 1030) {
-      game.roll();
-      house.getWinners();
-      c = 0;
-    }
-    else if (c == )
-    else if (c == 0) {
-      mainmenu(c);
-    }
-
-
-  }
-  return 0;
+ 
 }
 
-void mainmenu(int& control) {
-  int playerID = (control % 10) + 1;
-  std::cout << "## MAIN MENU. ##\n" << house.getParticipantName(playerID) << ", ";
+void mainmenu() {
+  
+  std::cout << "## MAIN MENU. ##\n" << "house.getParticipantName(playerID)" << ", ";
   std::cout << "Please enter your selection. \n"
             << std::setw(5) << "  1.)" << " Place Bet.\n"
             << std::setw(5) << "  2.)" << " Change Player.\n"
             << std::setw(5) << "  3.)" << " Spin the Wheel.\n"
             << std::setw(5) << "  4.)" << " Exit Game.\n";
-  int temp;
+  string temp;
   std::cin >> temp;
+  int swvar;
+  if (checkIsDigit(temp)) {
+    swvar = atoi(temp.c_str());
+  }
 
-  switch (temp) {
+  switch (swvar) {
     case 1:
-      control %= 10;
-      control += 1010;
-      betmenu(control);
+      
+      betmenu();
       break;
     case 2:
-      control %= 10;
-      control += 1020;
-      playermenu(control);
+     
+      playermenu();
       break;
     case 3:
-      control = 1030;
+      
       break;
     case 4:
-      control = 1990;
+      
       break;
 
     default:
-      control = -1;
-      mainmenu(control);
+      mainmenu();
   }
 }
 
-void betmenu(int& control) {
+void betmenu() {
   int Type = -1, TypeValue, Wager = -1;
-  int playerID = (control % 10) + 1;
   
-  std::cout << "## BET MENU. ##\n" << house.getParticipantName(playerID) << ", ";
+  std::cout << "## BET MENU. ##\n" << "house.getParticipantName()" << ", ";
   std::cout << "Please enter your selection. \n"
             << std::setw(5) << "  1.)" << " Enter Bet Type.\n"
             << std::setw(5) << "  2.)" << " Enter Bet Wager.\n"
             << std::setw(5) << "  3.)" << " Previous Menu.\n";
-  int temp;
+  string temp;
   std::cin >> temp;
-
-  switch (temp) {
+  int swvar;
+  if (checkIsDigit(temp)) {
+    swvar = atoi(temp.c_str());
+  }
+  switch (swvar) {
     case 1:
       Type = fetchType();
       TypeValue = Type % 100;
@@ -90,13 +74,12 @@ void betmenu(int& control) {
       break;
     
     case 3:
-      control %= 10;
-      control += 2030;
+
       break;
 
     default:
-      control -2;
-      betmenu(control);
+
+      betmenu();
   }  
 }
 
@@ -137,4 +120,9 @@ int fetchWager() {
   int wg;
 
   return wg;
+}
+
+void playermenu() {
+  std::cout << "\n\nSorry this feature is not yet implemented.\n\n";
+  mainmenu();
 }

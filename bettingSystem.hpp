@@ -14,10 +14,8 @@
 
 class BettingSystem {
 private:
-  std::vector<Participant> m_participantRef;   //holds an vector of participants
-  BetMessage * m_betMessageRef;
+  std::vector<Participant*> m_player;   //holds a vector of participants
   RouletteWheel * game;
-  void writeBank(Participant &);
   
 public:
   BettingSystem();
@@ -26,7 +24,5 @@ public:
   void joinGame(Participant*);
   void leaveGame(Participant*);
   void getWinners();
-  string getParticipantName(int);
-  void sendBetMessage(int,int,int,int);
-  void sendBetMessage();
+  string getParticipantName(Participant*);
 };

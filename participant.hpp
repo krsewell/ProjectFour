@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include "bettingSystem.hpp"
+#include "betmessage.hpp"
 
 using std::string;
 
@@ -11,25 +12,41 @@ using std::string;
 
 class Participant {
 private:
+  
   string m_name;
   int m_bank;
-  int m_gain;
+  int m_totalGain;
+  int m_spinGain;
+  BetMessage ** m_bets;
+  int SIZE;
   BettingSystem * m_CurrentBetTable;
+   
+  //declared private for use by betting system
+
+  int getBetNum();
   
-  friend class BettingSystem;
-  //declared private for use by betting system           
-  void PayOut(int);
-  void initBank();
 
 public:
   Participant(BettingSystem*);
   Participant(BettingSystem*, string);
+  ~Participant();
+
   void setName(string);
-  void setName();
+  void setName();     // When called with no args will prompt for a name before setting m_name
 
   string getName() const;
   int getBank() const;
-  int getGain() const;
+  int getTotalGain() const;
+  int getSpinGain() const;
+
+  void PayOut(int);
+  void setBetArray();
+  void delBetArray();
+  void initBank();
+  void resetSpin();
+  int getSIZE() const;
+  BetMessage* getBet(int);
+  
 
   
 };
